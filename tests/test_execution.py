@@ -1,21 +1,22 @@
 import unittest
 
-from src import console
-from src.console import ReturnCode
-from tests import plugin_test
+import terminal
+from terminal import ReturnCode
+import plugin_test as plugin_test
 
 
 class TestExecution(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        console.reset()
-        console.register_plugin(plugin_test)
+        terminal.reset()
+        terminal.register_plugin(plugin_test)
 
     def test_execution_success(self):
-        self.assertEqual(console.execute(args=['test', 'success']), ReturnCode.SUCCESS)
+        result = terminal.execute(args=['test', 'success'])
+        self.assertEqual(result, ReturnCode.SUCCESS)
 
     def test_execution_failure(self):
-        self.assertEqual(console.execute(args=['test', 'failure']), ReturnCode.FAILURE)
+        self.assertEqual(terminal.execute(args=['test', 'failure']), ReturnCode.FAILURE)
 
     def test_execution_quit(self):
-        self.assertEqual(console.execute(args=['test', 'quit']), ReturnCode.QUIT)
+        self.assertEqual(terminal.execute(args=['test', 'quit']), ReturnCode.QUIT)

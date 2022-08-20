@@ -31,3 +31,5 @@ def load_plugins(filename: str, ignore_errors: bool = False) -> bool:
             else:
                 warnings.warn(PluginNotFoundWarning(plugin_name))
     return True
+
+

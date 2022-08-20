@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser, Namespace
 from enum import Enum, auto
-from typing import Dict, Protocol, Optional
+from typing import Dict, Optional, Protocol
 
 commands: Dict[str, PCommand] = {}
 argument_parser: ArgumentParser = ArgumentParser()
@@ -11,8 +11,13 @@ command_parser = argument_parser.add_subparsers(dest='command')
 
 class ReturnCode(Enum):
     """Exit code of an execution."""
+    # noinspection PyArgumentList
     SUCCESS = auto()
+
+    # noinspection PyArgumentList
     FAILURE = auto()
+
+    # noinspection PyArgumentList
     QUIT = auto()
 
     @classmethod

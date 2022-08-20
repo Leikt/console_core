@@ -1,12 +1,12 @@
 import unittest
 
-from src import console
-from src.console import ReturnCode
+import terminal
+from terminal import ReturnCode
 
 
 class TestComplete(unittest.TestCase):
     def test_full_execution(self):
-        console.reset()
-        console.load_plugins('data/plugins.txt')
-        self.assertEqual(console.execute(['test', 'success']), ReturnCode.SUCCESS)
-        self.assertEqual(console.execute(['test', 'failure']), ReturnCode.FAILURE)
+        terminal.reset()
+        terminal.load_plugins('data/plugins.txt')
+        self.assertEqual(terminal.execute(['test', 'success']), ReturnCode.SUCCESS)
+        self.assertEqual(terminal.execute(['test', 'failure']), ReturnCode.FAILURE)

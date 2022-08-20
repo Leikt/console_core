@@ -17,11 +17,11 @@ class PluginNotFoundWarning(Warning):
 
 
 class CommandRegistrationConflict(Exception):
-    """Exception raised when multiple commands are registrated to the same keyword"""
+    """Exception raised when multiple commands are registered to the same keyword"""
 
     def __init__(self, keyword: str):
         self.keyword = keyword
-        self.message = f"Multiple commands registrated on {keyword}."
+        self.message = f"Multiple commands registered on {keyword}."
         super().__init__(self.message)
 
 
