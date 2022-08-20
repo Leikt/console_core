@@ -4,7 +4,6 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "terminal-core"
-version = "0.0.1"
 authors = [
     { name="Leikt SOL'REIHIN", email="leikt.solreihin@gmail.com" },
 ]
@@ -17,7 +16,11 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+dynamic=["version"]
 
 [project.urls]
 "Homepage" = "https://github.com/Leikt/console_core"
 "Bug Tracker" = "https://github.com/Leikt/console_core/issues"
+
+[tool.setuptools]
+packages=["terminal"]

@@ -2,9 +2,10 @@ import argparse
 import shlex
 from typing import List
 
+from .command import ReturnCode
 from .decorators import clean_keyboard_interruption
 from .exceptions import CommandNotFoundError
-from .variables import ReturnCode, argument_parser, commands
+from .variables import argument_parser, commands
 
 
 def execute(args: List[str]) -> ReturnCode:
@@ -21,10 +22,17 @@ def execute(args: List[str]) -> ReturnCode:
     return commands[args.command].execute(args)
 
 
+def read_next_command() -> str:
+    result = input('$> ')
+    if result == 'help':
+        return '--help'
+    return result
+
+
 @clean_keyboard_interruption
-def mainloop(prompt: str = '$> '):
+def mainloop():
     while True:
-        cli = input(prompt)
+        cli = read_next_command()
         args = shlex.split(cli)
         if len(args) == 0:
             continue

@@ -1,6 +1,7 @@
-from .commands import CommandQuit
+from .base_commands import CommandQuit
 from .exceptions import CommandRegistrationConflict
-from .variables import command_parser, commands, PCommand
+from .variables import command_parser, commands
+from .command import PCommand
 
 
 def initialize():

@@ -1,6 +1,6 @@
 from argparse import Namespace, ArgumentParser
 
-from .variables import ReturnCode
+from .command import ReturnCode
 
 
 class CommandQuit:
