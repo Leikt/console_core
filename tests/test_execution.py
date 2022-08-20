@@ -8,6 +8,7 @@ from tests import plugin_test
 class TestExecution(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
+        console.reset()
         console.register_plugin(plugin_test)
 
     def test_execution_success(self):
