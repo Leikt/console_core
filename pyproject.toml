@@ -3,12 +3,12 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "example_package_YOUR_USERNAME_HERE"
+name = "terminal-core"
 version = "0.0.1"
 authors = [
-    { name="Example Author", email="author@example.com" },
+    { name="Leikt SOL'REIHIN", email="leikt.solreihin@gmail.com" },
 ]
-description = "A small example package"
+description = "A core package for terminal applications."
 readme = "README.md"
 license = { file="LICENSE" }
 requires-python = ">=3.9"
