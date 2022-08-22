@@ -1,9 +1,8 @@
 import importlib
-import warnings
 from typing import List, Any
 
-from .exceptions import PluginNotFoundError, PluginNotFoundWarning
-from .registration import register_plugin
+from .command_set import PCommand
+from .exceptions import PluginNotFoundError
 
 
 def import_module(name: str) -> Any:
@@ -18,18 +17,20 @@ def read_plugins_file(filename: str) -> List[str]:
     return plugin_names
 
 
-def load_plugins(filename: str, ignore_errors: bool = False) -> bool:
-    """Load the plugin using the list in the file."""
-    plugin_names = read_plugins_file(filename)
-    for plugin_name in plugin_names:
-        try:
-            plugin = import_module(plugin_name)
-            register_plugin(plugin)
-        except ModuleNotFoundError:
-            if not ignore_errors:
-                raise PluginNotFoundError(plugin_name)
-            else:
-                warnings.warn(PluginNotFoundWarning(plugin_name))
-    return True
+def load_plugin(plugin_name: str) -> list[PCommand]:
+    try:
+        plugin = import_module(plugin_name)
+    except ModuleNotFoundError:
+        raise PluginNotFoundError(plugin_name)
+    return [command for command in plugin.plugin_commands()]
 
 
+def load_plugins(plugin_list: list[str]) -> list[PCommand]:
+    commands: list[PCommand] = []
+    for plugin_name in plugin_list:
+        commands += load_plugin(plugin_name)
+    return commands
+
+
+def load_plugins_from_file(filename: str) -> list[PCommand]:
+    return load_plugins(read_plugins_file(filename))

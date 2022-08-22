@@ -1,23 +1,21 @@
 from argparse import Namespace, ArgumentParser
+from typing import Optional, Any
 
 from terminal import ReturnCode
 from terminal import PCommand
 
 
-def plugin_registration() -> PCommand:
-    """Iterate the commands object to add to the system."""
+def plugin_commands() -> PCommand:
     yield CommandTest()
 
 
 class CommandTest:
-    KEYWORD = 'test'
-
     @staticmethod
-    def setup_parser(parser: ArgumentParser) -> bool:
-        parser.add_argument('value', type=str, choices=('success', 'failure', 'quit'))
-        return True
+    def get_keyword() -> str:
+        return 'test'
 
-    @staticmethod
-    def execute(args: Namespace) -> ReturnCode:
-        a = ReturnCode.SUCCESS == ReturnCode.from_name(args.value.upper())
-        return ReturnCode.from_name(args.value.upper())
+    def setup_argument_parser(self, argument_parser: ArgumentParser, depth: int = 0) -> None:
+        argument_parser.add_argument('value', type=str, choices=('success', 'failure', 'quit'))
+
+    def execute(self, arguments: Namespace) -> tuple[ReturnCode, Optional[Any]]:
+        return ReturnCode.from_name(arguments.value.upper()), None

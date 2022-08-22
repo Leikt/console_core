@@ -7,15 +7,6 @@ class PluginNotFoundError(Exception):
         super().__init__(self.message)
 
 
-class PluginNotFoundWarning(Warning):
-    """Warning raised when the plugin cannot be found."""
-
-    def __init__(self, plugin_name: str):
-        self.plugin_name = plugin_name
-        self.message = f"Unable to load the plugin {plugin_name}."
-        super().__init__(self.message)
-
-
 class CommandRegistrationConflict(Exception):
     """Exception raised when multiple commands are registered to the same keyword"""
 

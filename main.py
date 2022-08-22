@@ -1,5 +1,9 @@
-import terminal as terminal
+from argparse import ArgumentParser
 
-terminal.initialize()
-terminal.load_plugins('plugins.txt')
-terminal.mainloop()
+import terminal
+
+parser = ArgumentParser()
+commands = terminal.load_plugins_from_file('plugins.txt')
+ter: terminal.PTerminal = terminal.Terminal(parser)
+ter.initialize(commands)
+ter.mainloop()
