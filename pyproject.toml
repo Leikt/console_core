@@ -23,4 +23,4 @@ dynamic=["version"]
 "Bug Tracker" = "https://github.com/Leikt/console_core/issues"
 
 [tool.setuptools]
-packages=["terminal"]
+packages=["terminal", "plugin_core"]
