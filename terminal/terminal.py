@@ -43,6 +43,8 @@ class Terminal:
     def execute(self, command_line: str) -> tuple[ReturnCode, Optional[Any]]:
         cli = shlex.split(command_line)
         arguments = self.argument_parser.parse_args(cli)
+        if arguments.command_0 is None:
+            return ReturnCode.EMPTY, None
         return self.commands[arguments.command_0].execute(arguments)
 
     @clean_keyboard_interruption
@@ -52,7 +54,8 @@ class Terminal:
             code = ReturnCode.FAILURE
             try:
                 code, stdin = self.execute(command_line)
-                print(stdin)
+                if stdin is not None:
+                    print(stdin)
             except SystemExit:
                 continue
             except CommandNotFoundError as e:

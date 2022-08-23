@@ -19,6 +19,8 @@ class ReturnCode(Enum):
     # noinspection PyArgumentList
     QUIT = "quit"
 
+    EMPTY = "empty"
+
     @classmethod
     def from_name(cls, name: str) -> Optional[ReturnCode]:
         return cls.__members__.get(name, None)
@@ -67,9 +69,9 @@ class CommandSet(PCommandSet):
         default=default_custom_setup_argument_parser)
     pre_execution: Callable[[Namespace], tuple[bool, ReturnCode, Optional[Any]]] = field(default=default_pre_exec)
     post_execution: Callable[[Namespace], None] = field(default=default_post_exec)
-    __command_argument_name: str = field(init=False)
+    is_standalone: bool = field(default=False)
     __command_set: dict[str, PCommand] = field(default_factory=dict)
-    is_standlone: bool = field(default=False)
+    __command_argument_name: str = field(init=False)
 
     def get_keyword(self) -> str:
         return self.__keyword
@@ -94,7 +96,7 @@ class CommandSet(PCommandSet):
         """Set up the argument parsers for the commands."""
         self.__command_argument_name = f'command_{depth}'
         sub_parsers = argument_parser.add_subparsers(dest=self.__command_argument_name,
-                                                     required=(not self.is_standlone))
+                                                     required=(not self.is_standalone))
         for command in self.__command_set.values():
             sub_parser = sub_parsers.add_parser(name=command.get_keyword())
             command.setup_argument_parser(sub_parser, depth + 1)
