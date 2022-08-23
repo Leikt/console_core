@@ -3,6 +3,7 @@ from argparse import ArgumentParser
 from dataclasses import dataclass, field
 from typing import Protocol, Any, Optional
 
+from . import CommandNotFoundError
 from .command_set import ReturnCode, PCommand
 from .decorators import clean_keyboard_interruption
 
@@ -53,6 +54,9 @@ class Terminal:
                 code, stdin = self.execute(command_line)
                 print(stdin)
             except SystemExit:
+                continue
+            except CommandNotFoundError as e:
+                print(e.message)
                 continue
             finally:
                 if code == ReturnCode.QUIT:

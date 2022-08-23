@@ -69,6 +69,7 @@ class CommandSet(PCommandSet):
     post_execution: Callable[[Namespace], None] = field(default=default_post_exec)
     __command_argument_name: str = field(init=False)
     __command_set: dict[str, PCommand] = field(default_factory=dict)
+    is_standlone: bool = field(default=False)
 
     def get_keyword(self) -> str:
         return self.__keyword
@@ -92,7 +93,8 @@ class CommandSet(PCommandSet):
     def setup_argument_parser(self, argument_parser: ArgumentParser, depth: int = 1) -> None:
         """Set up the argument parsers for the commands."""
         self.__command_argument_name = f'command_{depth}'
-        sub_parsers = argument_parser.add_subparsers(dest=self.__command_argument_name)
+        sub_parsers = argument_parser.add_subparsers(dest=self.__command_argument_name,
+                                                     required=(not self.is_standlone))
         for command in self.__command_set.values():
             sub_parser = sub_parsers.add_parser(name=command.get_keyword())
             command.setup_argument_parser(sub_parser, depth + 1)
@@ -124,6 +126,7 @@ class CommandSetBuilder:
     __custom_pre_exec: Callable[[Namespace], tuple[bool, ReturnCode, Optional[Any]]] = field(default=default_pre_exec)
     __custom_post_exec: Callable[[Namespace], None] = field(default=default_post_exec)
     __commands: list[PCommand] = field(default_factory=list)
+    __is_standalone: bool = field(default=False)
 
     def add_command(self, command: Union[PCommand, type]) -> CommandSetBuilder:
         if isinstance(command, type):
@@ -144,9 +147,14 @@ class CommandSetBuilder:
         self.__custom_post_exec = function
         return self
 
+    def set_standalone(self, value: bool = True) -> CommandSetBuilder:
+        self.__is_standalone = value
+        return self
+
     def build(self) -> PCommandSet:
         command_set: PCommandSet = self.__command_set_class(self.__keyword, self.__custom_setup_argument_parsing,
-                                                            self.__custom_pre_exec, self.__custom_post_exec)
+                                                            self.__custom_pre_exec, self.__custom_post_exec,
+                                                            is_standalone=self.__is_standalone)
         for command in self.__commands:
             command_set.register_command(command)
         return command_set
